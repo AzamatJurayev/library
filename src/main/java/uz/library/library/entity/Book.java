@@ -19,8 +19,6 @@ public class Book {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Library library;
-
-    private Date dateOfUse;
 }

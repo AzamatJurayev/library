@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @OneToOne
     private Role role;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Rental> rentals;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

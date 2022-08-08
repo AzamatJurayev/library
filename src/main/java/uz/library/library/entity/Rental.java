@@ -3,7 +3,7 @@ package uz.library.library.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -11,15 +11,17 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class Library {
+public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @OneToOne
+    private Book book;
 
-    @OneToMany(cascade = CascadeType.REMOVE)//(mappedBy = "library")
-    private List<Book> books;
+    @ManyToOne
+    private User user;
 
+    private Date dateOfUse;
 }
