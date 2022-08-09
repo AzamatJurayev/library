@@ -19,7 +19,7 @@ public class Library {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE)//(mappedBy = "library")
+    @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "library")
     private List<Book> books;
 
 }

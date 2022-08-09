@@ -3,7 +3,7 @@ package uz.library.library.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -11,19 +11,10 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class Rental {
-
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Book book;
-
-    @ManyToOne
-    private User user;
-
-    private Date dateOfUse;
-
-    private boolean isUseful;
+    private String name;
 }

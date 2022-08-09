@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -19,6 +20,11 @@ public class Book {
 
     private String name;
 
+    private String author;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Library library;
+
+    @ManyToMany
+    private List<Category> categories;
 }
