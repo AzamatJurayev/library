@@ -56,6 +56,12 @@ public class RoleService {
         }
     }
 
+    public ApiResponse getAllByName(String name) {
+        List<Role> byName = roleRepository.findAllByNameContainingIgnoreCase(name);
+        return ApiResponse.builder().data(byName).success(true).message("Mana").build();
+
+    }
+
     public ApiResponse edit(Long id, RoleDto roleDto) {
         Optional<Role> byId = roleRepository.findById(id);
         if (byId.isPresent()) {

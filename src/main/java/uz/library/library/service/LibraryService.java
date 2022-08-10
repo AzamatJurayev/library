@@ -7,6 +7,7 @@ import uz.library.library.dto.LibraryDto;
 import uz.library.library.entity.Book;
 import uz.library.library.entity.Permission;
 import uz.library.library.entity.Library;
+import uz.library.library.entity.Role;
 import uz.library.library.repository.BookRepository;
 import uz.library.library.repository.LibraryRepository;
 
@@ -61,7 +62,11 @@ public class LibraryService {
             return ApiResponse.builder().success(false).message("Not Found").build();
         }
     }
+    public ApiResponse getAllByName(String name) {
+        List<Library> byName = libraryRepository.findAllByNameContainingIgnoreCase(name);
+        return ApiResponse.builder().data(byName).success(true).message("Mana").build();
 
+    }
     public ApiResponse edit(Long id, LibraryDto libraryDto) {
         Optional<Library> byId = libraryRepository.findById(id);
         if (byId.isPresent()) {

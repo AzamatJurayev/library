@@ -3,6 +3,7 @@ package uz.library.library.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,7 +24,7 @@ public class Rental {
     @ManyToOne
     private User user;
 
-    private Date dateOfUse;
+    private LocalDateTime dateOfUse;
 
-    private boolean isUseful;
+//    private boolean isUseful = true;
 }

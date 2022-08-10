@@ -1,14 +1,13 @@
 package uz.library.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "users")
 @AllArgsConstructor
@@ -37,17 +36,26 @@ public class User implements UserDetails {
 
     private boolean isEnabled = true;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Role role;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    @JsonIgnore
     private List<Rental> rentals;
+
+    public User(Long id, String fullName, String password, String phone, Role role) {
+        this.id = id;
+        this.fullName = fullName;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-        for (Permission permission : this.role.getPermission()) {
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        System.out.println(this.role);
+        for (Permission permission : this.getRole().getPermission()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(permission.toString()));
         }
 
@@ -56,12 +64,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return getPhone();
+        return this.phone;
     }
 
     @Override

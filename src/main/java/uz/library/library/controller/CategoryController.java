@@ -11,41 +11,47 @@ import uz.library.library.service.CategoryService;
 
 
 @RestController
-@RequestMapping("category")
+@RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
-    @PreAuthorize("hasAnyAuthority('ADMIN','MODERATOR')")
+    @PreAuthorize("hasAnyAuthority('R_CATEGORY')")
     @GetMapping
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(categoryService.getAll());
     }
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('C_CATEGORY')")
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Category category){
         ApiResponse save = categoryService.save(category);
         return ResponseEntity.status(save.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(save);
     }
-    @PreAuthorize("hasAnyAuthority('ADMIN','MODERATOR')")
+    @PreAuthorize("hasAnyAuthority('R_CATEGORY')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id){
         ApiResponse response = categoryService.getOne(id);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
-
+    @PreAuthorize("hasAnyAuthority('R_CATEGORY')")
     @GetMapping("/{name}")
-    public ResponseEntity<?> getOne(@PathVariable String name){
+    public ResponseEntity<?> getOneByName(@PathVariable String name){
         ApiResponse response = categoryService.getOneByName(name);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
-    @PreAuthorize("hasAnyAuthority('ADMIN','MODERATOR')")
+    @PreAuthorize("hasAnyAuthority('R_CATEGORY')")
+    @GetMapping("/search/{name}")
+    public ResponseEntity<?> select(@PathVariable String name){
+        ApiResponse response = categoryService.getAllByName(name);
+        return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
+    }
+    @PreAuthorize("hasAnyAuthority('U_CATEGORY')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable Long id,@RequestBody Category category){
         ApiResponse response = categoryService.edit(id, category);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('D_CATEGORY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         ApiResponse response = categoryService.delete(id);

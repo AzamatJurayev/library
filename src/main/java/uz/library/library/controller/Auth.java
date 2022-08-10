@@ -24,13 +24,13 @@ public class Auth {
 
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDTO) {
         String token = jwtProvider.generateToken(loginDTO.getPhone());
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto){
         ApiResponse response = userService.register(registerDto);
         String token = jwtProvider.generateToken(registerDto.getPhone());

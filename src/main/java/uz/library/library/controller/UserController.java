@@ -6,55 +6,59 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.library.library.dto.ApiResponse;
-import uz.library.library.dto.RoleDto;
-import uz.library.library.service.RoleService;
+import uz.library.library.dto.UserDto;
+import uz.library.library.service.UserService;
 
 
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
-    RoleService roleService;
-    @PreAuthorize("hasAnyAuthority('R_ROLE')")
+    UserService userService;
+    @PreAuthorize("hasAnyAuthority('R_USER')")
     @GetMapping
     public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(roleService.getAll());
+        return ResponseEntity.ok(userService.getAll());
     }
-    @PreAuthorize("hasAuthority('C_ROLE')")
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody RoleDto role){
-        ApiResponse save = roleService.save(role);
-        return ResponseEntity.status(save.isSuccess() ? HttpStatus.CREATED : HttpStatus.CONFLICT).body(save);
-    }
-    @PreAuthorize("hasAnyAuthority('R_ROLE')")
+
+    @PreAuthorize("hasAnyAuthority('R_USER')")
     @GetMapping("/select/{name}")
-    public ResponseEntity<?> select(@PathVariable String name){
-        ApiResponse response = roleService.getAllByName(name);
+    public ResponseEntity<?> selectByName(@PathVariable String name){
+        ApiResponse response = userService.getAllByName(name);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
-    @PreAuthorize("hasAnyAuthority('R_ROLE')")
+
+    @PreAuthorize("hasAnyAuthority('R_USER')")
+    @GetMapping("/select/{phone}")
+    public ResponseEntity<?> selectByPhone(@PathVariable String phone){
+        ApiResponse response = userService.selectByPhone(phone);
+        return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
+    }
+
+    @PreAuthorize("hasAnyAuthority('R_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id){
-        ApiResponse response = roleService.getOne(id);
+        ApiResponse response = userService.getOne(id);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
-    @PreAuthorize("hasAnyAuthority('R_ROLE')")
+
+    @PreAuthorize("hasAnyAuthority('R_USER')")
     @GetMapping("/{name}")
     public ResponseEntity<?> getOneByName(@PathVariable String name){
-        ApiResponse response = roleService.getOneByName(name);
+        ApiResponse response = userService.getOneByName(name);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
-    @PreAuthorize("hasAnyAuthority('U_ROLE')")
+    @PreAuthorize("hasAnyAuthority('U_USER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id,@RequestBody RoleDto role){
-        ApiResponse response = roleService.edit(id, role);
+    public ResponseEntity<?> edit(@PathVariable Long id,@RequestBody UserDto user){
+        ApiResponse response = userService.edit(id, user);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
-    @PreAuthorize("hasAuthority('D_ROLE')")
+    @PreAuthorize("hasAuthority('D_USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        ApiResponse response = roleService.delete(id);
+        ApiResponse response = userService.delete(id);
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
 }

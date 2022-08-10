@@ -11,9 +11,9 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    @Value("${token.time.to.live}")
-    private String secretKey;
     @Value("${token.secret.key}")
+    private String secretKey;
+    @Value("${token.time.to.live}")
     private String ttl;
 
     //kalit token yasash

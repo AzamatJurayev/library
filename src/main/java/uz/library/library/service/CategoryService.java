@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.library.library.dto.ApiResponse;
 import uz.library.library.entity.Category;
+import uz.library.library.entity.Role;
 import uz.library.library.repository.CategoryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +28,11 @@ public class CategoryService {
             return ApiResponse.builder().data(save).message("Error!").success(false).build();
         }
     }
+    public ApiResponse getAllByName(String name) {
+        List<Category> byName = categoryRepository.findAllByNameContainingIgnoreCase(name);
+        return ApiResponse.builder().data(byName).success(true).message("Mana").build();
 
+    }
     public ApiResponse getOne(Long id) {
         Optional<Category> byId = categoryRepository.findById(id);
         if (byId.isPresent()) {
